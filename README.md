@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml"><img src="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
+  <a href="https://github.com/Balaji91221/browserassert/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/Node.js-22.18%2B-339933" alt="Node.js 22.18 or newer">
   <img src="https://img.shields.io/badge/TypeScript-SDK-3178c6" alt="TypeScript SDK">
   <img src="https://img.shields.io/badge/Playwright-adapter-7c3aed" alt="Playwright adapter">
@@ -15,7 +15,7 @@
 <p><a href="#why-i-built-it">Why</a> · <a href="#quick-start">Quick start</a> · <a href="#usage">Usage</a> · <a href="#architecture">Architecture</a> · <a href="#documentation">Documentation</a></p>
 </div>
 
-![BrowserAssert workflow: declare an expected result, observe the page, and inspect the evidence.](docs/assets/overview.svg)
+![BrowserAssert workflow: declare an expected result, observe the page, and inspect the evidence.](https://raw.githubusercontent.com/Balaji91221/browserassert/main/docs/assets/overview.svg)
 
 ## Why I built it
 
@@ -42,6 +42,13 @@ Useful for browser-agent builders, Playwright automation authors, and QA enginee
 Requires **Node.js 22.18+**. No model account or API key is needed.
 
 ```bash
+npm install browserassert
+npx browserassert demo
+```
+
+The demo checks a simulated edit that disappears after reload. It returns `failed` and intentionally exits with code **1**. For a live browser workflow, clone the example project:
+
+```bash
 git clone https://github.com/Balaji91221/browserassert.git
 cd browserassert
 npm ci
@@ -63,7 +70,7 @@ download: verified
 
 Open `/tmp/browserassert-demo-001/report.html` to inspect the saved settings check.
 
-![Actual BrowserAssert evidence report from the local settings fixture.](docs/assets/demo.png)
+![Actual BrowserAssert evidence report from the local settings fixture.](https://raw.githubusercontent.com/Balaji91221/browserassert/main/docs/assets/demo.png)
 
 *Actual HTML report from the included local fixture. This demonstrates a controlled workflow, not compatibility with every website.*
 
@@ -73,18 +80,19 @@ To see a failure, run `npm run demo`. It simulates a value that disappears after
 
 ### Install the SDK in your application
 
-The source is public; version **0.2.0 is not published to npm**. From this checkout:
-
 ```bash
-npm pack
-# In your own application:
-npm install /absolute/path/to/browserassert/ai-opensource-local-browserassert-0.2.0.tgz
+npm install browserassert
+# If your app does not already use Playwright:
+npm install playwright
+npx playwright install chromium
 ```
+
+The package includes compiled JavaScript and TypeScript declarations. It uses the Playwright page supplied by your application.
 
 ### Verify a result on an existing Playwright page
 
 ```ts
-import { PlaywrightAdapter, verify } from '@ai-opensource-local/browserassert';
+import { PlaywrightAdapter, verify } from 'browserassert';
 
 // `page` is your existing Playwright Page, after your agent saves the setting.
 const result = await verify(
@@ -104,7 +112,7 @@ The selector must identify exactly one element. `reload: true` permits a page re
 | `failed` | Completed observations did not satisfy the contract |
 | `unknown` | Evidence was incomplete, unavailable, cancelled, or still pending at the deadline |
 
-Use the **SDK for live browser checks** and the **CLI for recorded observations and reports**. There is no MCP server in this release. See the [usage guide](docs/usage.md) for verification plans, authentication signals, downloads, redaction, and cancellation.
+Use the **SDK for live browser checks** and the **CLI for recorded observations and reports**. There is no MCP server in this release. See the [usage guide](https://github.com/Balaji91221/browserassert/blob/main/docs/usage.md) for verification plans, authentication signals, downloads, redaction, and cancellation.
 
 ## Architecture
 
@@ -123,13 +131,13 @@ The verifier owns the decision rules. The adapter reads browser state. The repor
 
 | Component | Responsibility |
 |---|---|
-| [`verify` / `BrowserAdapter`](src/index.ts) | Validate a contract, poll within a deadline, and classify the evidence |
-| [`PlaywrightAdapter`](src/index.ts) | Read a single matching element and perform a requested reload |
-| [`runPlan`](src/plan.ts) | Run multiple checks under one overall deadline and optional authentication gate |
-| [`saveBundle`](src/plan.ts) | Save redacted JSON, an HTML report, optional screenshot, and file hashes |
-| [`CLI`](src/cli.ts) | Evaluate recordings and generate reports |
+| [`verify` / `BrowserAdapter`](https://github.com/Balaji91221/browserassert/blob/main/src/index.ts) | Validate a contract, poll within a deadline, and classify the evidence |
+| [`PlaywrightAdapter`](https://github.com/Balaji91221/browserassert/blob/main/src/index.ts) | Read a single matching element and perform a requested reload |
+| [`runPlan`](https://github.com/Balaji91221/browserassert/blob/main/src/plan.ts) | Run multiple checks under one overall deadline and optional authentication gate |
+| [`saveBundle`](https://github.com/Balaji91221/browserassert/blob/main/src/plan.ts) | Save redacted JSON, an HTML report, optional screenshot, and file hashes |
+| [`CLI`](https://github.com/Balaji91221/browserassert/blob/main/src/cli.ts) | Evaluate recordings and generate reports |
 
-Read the [architecture guide](docs/architecture.md) for the HLD, LLD, contracts, and design tradeoffs.
+Read the [architecture guide](https://github.com/Balaji91221/browserassert/blob/main/docs/architecture.md) for the HLD, LLD, contracts, and design tradeoffs.
 
 ## Current scope
 
@@ -142,9 +150,9 @@ Read the [architecture guide](docs/architecture.md) for the HLD, LLD, contracts,
 
 | Start here | Go deeper |
 |---|---|
-| [Usage and integration recipes](docs/usage.md) | [Architecture: HLD and LLD](docs/architecture.md) |
-| [Implemented features](FEATURE_MATRIX.md) | [Project plan](PROJECT_PLAN.md) |
-| [Verification and release scope](IMPLEMENTATION_STATUS.md) | [Security policy](SECURITY.md) |
+| [Usage and integration recipes](https://github.com/Balaji91221/browserassert/blob/main/docs/usage.md) | [Architecture: HLD and LLD](https://github.com/Balaji91221/browserassert/blob/main/docs/architecture.md) |
+| [Implemented features](https://github.com/Balaji91221/browserassert/blob/main/FEATURE_MATRIX.md) | [Project plan](https://github.com/Balaji91221/browserassert/blob/main/PROJECT_PLAN.md) |
+| [Verification and release scope](https://github.com/Balaji91221/browserassert/blob/main/IMPLEMENTATION_STATUS.md) | [Security policy](https://github.com/Balaji91221/browserassert/blob/main/SECURITY.md) |
 
 ## Development
 
@@ -154,6 +162,6 @@ npm run build
 npm test
 ```
 
-The test suite includes real-browser integration checks; install Chromium as shown above. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, or open a [GitHub issue](https://github.com/Balaji91221/browserassert/issues) with a reproducible case.
+The test suite includes real-browser integration checks; install Chromium as shown above. See [CONTRIBUTING.md](https://github.com/Balaji91221/browserassert/blob/main/CONTRIBUTING.md) for the workflow, or open a [GitHub issue](https://github.com/Balaji91221/browserassert/issues) with a reproducible case.
 
-Released under the [MIT License](LICENSE).
+Released under the [MIT License](https://github.com/Balaji91221/browserassert/blob/main/LICENSE).

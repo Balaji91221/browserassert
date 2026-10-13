@@ -4,7 +4,7 @@
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Evidence-backed browser postcondition verification. Local development release 0.2.0; not published to npm.
+Evidence-backed browser postcondition verification. Version 0.2.0. Install with `npm install browserassert`.
 
 ## Quick start and usage
 
@@ -29,7 +29,7 @@ The verifier returns `verified`, `failed`, or `unknown`. CLI exit codes are resp
 ### Attach to an existing Playwright page
 
 ```ts
-import { PlaywrightAdapter, verify } from '@ai-opensource-local/browserassert';
+import { PlaywrightAdapter, verify } from 'browserassert';
 const result = await verify(
   { selector: '#display-name', expected: 'Alice', reload: true, timeoutMs: 3000 },
   new PlaywrightAdapter(page),
@@ -40,7 +40,7 @@ console.log(result.verdict, result.evidence);
 The caller owns the page and any action that changed it. The verifier never clicks Save. `reload: true` explicitly permits one reload; omit it for observation-only checks. Supported expected values are scalar strings, numbers, booleans, or null; DOM values are usually strings. Selectors must match exactly one element. Adapter observations must identify that exact selector in `source`; unrelated evidence returns unknown. The adapter reads an element's `value`, or its `textContent` otherwise.
 
 ```ts
-import { verifyDownload } from '@ai-opensource-local/browserassert';
+import { verifyDownload } from 'browserassert';
 const pending = page.waitForEvent('download');
 await page.getByText('Download').click(); // caller's action
 const result = await verifyDownload(await pending, {
@@ -58,7 +58,16 @@ node dist/cli.js check-recording contract.json observations.json
 
 A contract is `{ "selector": "#status", "expected": "Saved" }`. Observations are an array of `{ "source": "#status", "value": "Saved" }`. This evaluates recorded evidence only; it rejects reload contracts and cannot prove current browser state.
 
-## Local installation in another project
+## Install from npm
+
+```bash
+npm install browserassert
+npx browserassert demo
+```
+
+The deliberate failing demo exits with code 1.
+
+## Build a local tarball
 
 Build and package this source folder, then install the resulting tarball in your consuming project:
 
@@ -69,7 +78,7 @@ npm pack
 npm install /absolute/path/to/generated-package.tgz
 ```
 
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. The package is marked private to prevent accidental publication. Original code is MIT licensed. Selecting an available public name and publishing remain explicit release tasks; dependencies retain their own licenses.
+The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name is `browserassert`.
 
 ## Design and current scope
 
@@ -78,7 +87,7 @@ See [FEATURE_MATRIX.md](../FEATURE_MATRIX.md) for the implemented plan phases an
 ## Verification plans and evidence bundles
 
 ```ts
-import { PlaywrightAdapter, runPlan, saveBundle } from '@ai-opensource-local/browserassert';
+import { PlaywrightAdapter, runPlan, saveBundle } from 'browserassert';
 const plan = {
   schemaVersion: 1, id: 'settings', timeoutMs: 5000,
   authenticated: { selector: '#identity', expected: 'Signed in' },

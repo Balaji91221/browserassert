@@ -13,3 +13,7 @@ pointing to an installed browser. Local verification used installed Chrome.
 Local tarball installation and the controlled browser workflow were also verified.
 The npm release uses compiled JavaScript and TypeScript declarations. Check the
 [registry entry](https://www.npmjs.com/package/browserassert) for available versions.
+
+## Public distribution
+
+The compiled `browserassert@0.2.0` package is distributed as a [GitHub release tarball](https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz). npm registry publication is pending. Installing the public tarball with npm provides the same SDK and CLI.

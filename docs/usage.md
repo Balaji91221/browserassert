@@ -1,10 +1,13 @@
 # BrowserAssert usage guide
 
+**Package availability:** use the GitHub release tarball URL below. npm registry publication is pending; package imports and installed CLI names stay `browserassert`.
+
+
 [← README](../README.md) · [Architecture](architecture.md)
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Evidence-backed browser postcondition verification. Version 0.2.0. Install with `npm install browserassert`.
+Evidence-backed browser postcondition verification. Version 0.2.0. Install with `npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz`.
 
 ## Quick start and usage
 
@@ -58,10 +61,10 @@ node dist/cli.js check-recording contract.json observations.json
 
 A contract is `{ "selector": "#status", "expected": "Saved" }`. Observations are an array of `{ "source": "#status", "value": "Saved" }`. This evaluates recorded evidence only; it rejects reload contracts and cannot prove current browser state.
 
-## Install from npm
+## Install the release package
 
 ```bash
-npm install browserassert
+npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
 npx browserassert demo
 ```
 

@@ -39,10 +39,13 @@ Useful for browser-agent builders, Playwright automation authors, and QA enginee
 
 ## Quick start
 
+**Install from the GitHub release below.** The compiled package is ready to use; npm registry publication is pending.
+
+
 Requires **Node.js 22.18+**. No model account or API key is needed.
 
 ```bash
-npm install browserassert
+npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
 npx browserassert demo
 ```
 
@@ -81,7 +84,7 @@ To see a failure, run `npm run demo`. It simulates a value that disappears after
 ### Install the SDK in your application
 
 ```bash
-npm install browserassert
+npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
 # If your app does not already use Playwright:
 npm install playwright
 npx playwright install chromium

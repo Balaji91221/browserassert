@@ -1,5 +1,5 @@
 {
-  "name": "@kelavathbalajinaik/browserassert",
+  "name": "browserassert-sdk",
   "version": "0.2.1",
   "description": "Evidence based postcondition checks for browser actions",
   "type": "module",

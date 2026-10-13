@@ -5,6 +5,7 @@
 <p>Check the outcome of a browser action with explicit expectations, bounded waits, and evidence you can inspect.</p>
 
 <p>
+  <a href="https://www.npmjs.com/package/browserassert-sdk"><img src="https://img.shields.io/npm/v/browserassert-sdk" alt="npm version"></a>
   <a href="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml"><img src="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI"></a>
   <a href="https://github.com/Balaji91221/browserassert/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/Node.js-22.18%2B-339933" alt="Node.js 22.18 or newer">
@@ -42,8 +43,8 @@ Useful for browser-agent builders, Playwright automation authors, and QA enginee
 Requires **Node.js 22.18+**. No model account or API key is needed.
 
 ```bash
-npm install @kelavathbalajinaik/browserassert@0.2.1
-npx browserassert demo
+npm install browserassert-sdk@0.2.1
+npx browserassert-sdk demo
 ```
 
 The demo checks a simulated edit that disappears after reload. It returns `failed` and intentionally exits with code **1**. For a live browser workflow, clone the example project:
@@ -81,18 +82,18 @@ To see a failure, run `npm run demo`. It simulates a value that disappears after
 ### Install the SDK in your application
 
 ```bash
-npm install @kelavathbalajinaik/browserassert@0.2.1
+npm install browserassert-sdk@0.2.1
 # If your app does not already use Playwright:
 npm install playwright
 npx playwright install chromium
 ```
 
-Import the SDK from `@kelavathbalajinaik/browserassert`. The installed CLI is still `browserassert`. The package includes compiled JavaScript and TypeScript declarations. It uses the Playwright page supplied by your application.
+Import the SDK from `browserassert-sdk`. The installed CLI is still `browserassert`. The package includes compiled JavaScript and TypeScript declarations. It uses the Playwright page supplied by your application.
 
 ### Verify a result on an existing Playwright page
 
 ```ts
-import { PlaywrightAdapter, verify } from '@kelavathbalajinaik/browserassert';
+import { PlaywrightAdapter, verify } from 'browserassert-sdk';
 
 // `page` is your existing Playwright Page, after your agent saves the setting.
 const result = await verify(

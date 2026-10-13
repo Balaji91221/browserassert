@@ -12,8 +12,8 @@ test also needs `npx playwright install chromium` or `BROWSERASSERT_EXECUTABLE`
 pointing to an installed browser. Local verification used installed Chrome.
 Local tarball installation and the controlled browser workflow were also verified.
 The npm release uses compiled JavaScript and TypeScript declarations. Check the
-[registry entry](https://www.npmjs.com/package/@kelavathbalajinaik/browserassert) for available versions.
+[registry entry](https://www.npmjs.com/package/browserassert-sdk) for available versions.
 
 ## Public distribution
 
-Install the compiled npm package with `npm install @kelavathbalajinaik/browserassert@0.2.1`. It includes the SDK, CLI, and TypeScript declarations. Version 0.2.1 updates packaging and install documentation; runtime behavior is unchanged from 0.2.0. The existing [v0.2.0 GitHub release](https://github.com/Balaji91221/browserassert/releases/tag/v0.2.0) remains unchanged with its original unscoped package metadata. Use the scoped npm package and imports for 0.2.1.
+Install the compiled npm package with `npm install browserassert-sdk@0.2.1`. It includes the SDK, CLI, and TypeScript declarations. Version 0.2.1 updates packaging and install documentation; runtime behavior is unchanged from 0.2.0. The existing [v0.2.0 GitHub release](https://github.com/Balaji91221/browserassert/releases/tag/v0.2.0) remains unchanged with its original package metadata. Use `browserassert-sdk` for the package name and SDK imports; the installed executable remains `browserassert`.

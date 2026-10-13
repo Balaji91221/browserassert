@@ -2,9 +2,9 @@
 
 ## 0.2.1 — 2026-10-13
 
-Packaging and documentation release for the public `@kelavathbalajinaik/browserassert` npm package.
-The scoped name avoids a registry naming conflict. SDK imports use the scoped
-name; the `browserassert` CLI, exported APIs, and GitHub repository keep their names.
+Packaging and documentation release for the public `browserassert-sdk` npm package.
+The package and SDK import now use the neutral name `browserassert-sdk`.
+The CLI, exported APIs, and GitHub repository keep their existing names.
 Updated npm installation instructions, package and lockfile versions, and
 release guidance. The package continues to ship
 compiled JavaScript and TypeScript declarations. No runtime behavior or

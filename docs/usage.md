@@ -1,13 +1,12 @@
 # BrowserAssert usage guide
 
-**Package availability:** use the GitHub release tarball URL below. npm registry publication is pending; package imports and installed CLI names stay `browserassert`.
-
+Install the npm package with `npm install @kelavathbalajinaik/browserassert@0.2.1`. Import the SDK from `@kelavathbalajinaik/browserassert`; the installed CLI remains `browserassert`.
 
 [← README](../README.md) · [Architecture](architecture.md)
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Evidence-backed browser postcondition verification. Version 0.2.0. Install with `npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz`.
+Evidence-backed browser postcondition verification. Version 0.2.1. Install with `npm install @kelavathbalajinaik/browserassert@0.2.1`.
 
 ## Quick start and usage
 
@@ -32,7 +31,7 @@ The verifier returns `verified`, `failed`, or `unknown`. CLI exit codes are resp
 ### Attach to an existing Playwright page
 
 ```ts
-import { PlaywrightAdapter, verify } from 'browserassert';
+import { PlaywrightAdapter, verify } from '@kelavathbalajinaik/browserassert';
 const result = await verify(
   { selector: '#display-name', expected: 'Alice', reload: true, timeoutMs: 3000 },
   new PlaywrightAdapter(page),
@@ -43,7 +42,7 @@ console.log(result.verdict, result.evidence);
 The caller owns the page and any action that changed it. The verifier never clicks Save. `reload: true` explicitly permits one reload; omit it for observation-only checks. Supported expected values are scalar strings, numbers, booleans, or null; DOM values are usually strings. Selectors must match exactly one element. Adapter observations must identify that exact selector in `source`; unrelated evidence returns unknown. The adapter reads an element's `value`, or its `textContent` otherwise.
 
 ```ts
-import { verifyDownload } from 'browserassert';
+import { verifyDownload } from '@kelavathbalajinaik/browserassert';
 const pending = page.waitForEvent('download');
 await page.getByText('Download').click(); // caller's action
 const result = await verifyDownload(await pending, {
@@ -64,7 +63,7 @@ A contract is `{ "selector": "#status", "expected": "Saved" }`. Observations are
 ## Install the release package
 
 ```bash
-npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
+npm install @kelavathbalajinaik/browserassert@0.2.1
 npx browserassert demo
 ```
 
@@ -81,7 +80,7 @@ npm pack
 npm install /absolute/path/to/generated-package.tgz
 ```
 
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name is `browserassert`.
+The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name and SDK import are `@kelavathbalajinaik/browserassert`; the CLI remains `browserassert`.
 
 ## Design and current scope
 
@@ -90,7 +89,7 @@ See [FEATURE_MATRIX.md](../FEATURE_MATRIX.md) for the implemented plan phases an
 ## Verification plans and evidence bundles
 
 ```ts
-import { PlaywrightAdapter, runPlan, saveBundle } from 'browserassert';
+import { PlaywrightAdapter, runPlan, saveBundle } from '@kelavathbalajinaik/browserassert';
 const plan = {
   schemaVersion: 1, id: 'settings', timeoutMs: 5000,
   authenticated: { selector: '#identity', expected: 'Signed in' },

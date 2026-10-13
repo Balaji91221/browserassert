@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.1 — 2026-10-13
+
+Packaging and documentation release for the public `@kelavathbalajinaik/browserassert` npm package.
+The scoped name avoids a registry naming conflict. SDK imports use the scoped
+name; the `browserassert` CLI, exported APIs, and GitHub repository keep their names.
+Updated npm installation instructions, package and lockfile versions, and
+release guidance. The package continues to ship
+compiled JavaScript and TypeScript declarations. No runtime behavior or
+dependency versions changed; existing v0.2.0 GitHub tags and assets are preserved.
+
 ## 0.2.0 — 2026-10-13 (local)
 
 Completed the local roadmap implementation, source-backed reports, bounded

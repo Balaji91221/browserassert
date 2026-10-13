@@ -39,13 +39,10 @@ Useful for browser-agent builders, Playwright automation authors, and QA enginee
 
 ## Quick start
 
-**Install from the GitHub release below.** The compiled package is ready to use; npm registry publication is pending.
-
-
 Requires **Node.js 22.18+**. No model account or API key is needed.
 
 ```bash
-npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
+npm install @kelavathbalajinaik/browserassert@0.2.1
 npx browserassert demo
 ```
 
@@ -84,18 +81,18 @@ To see a failure, run `npm run demo`. It simulates a value that disappears after
 ### Install the SDK in your application
 
 ```bash
-npm install https://github.com/Balaji91221/browserassert/releases/download/v0.2.0/browserassert-0.2.0.tgz
+npm install @kelavathbalajinaik/browserassert@0.2.1
 # If your app does not already use Playwright:
 npm install playwright
 npx playwright install chromium
 ```
 
-The package includes compiled JavaScript and TypeScript declarations. It uses the Playwright page supplied by your application.
+Import the SDK from `@kelavathbalajinaik/browserassert`. The installed CLI is still `browserassert`. The package includes compiled JavaScript and TypeScript declarations. It uses the Playwright page supplied by your application.
 
 ### Verify a result on an existing Playwright page
 
 ```ts
-import { PlaywrightAdapter, verify } from 'browserassert';
+import { PlaywrightAdapter, verify } from '@kelavathbalajinaik/browserassert';
 
 // `page` is your existing Playwright Page, after your agent saves the setting.
 const result = await verify(

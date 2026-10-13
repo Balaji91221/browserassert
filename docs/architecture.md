@@ -2,7 +2,7 @@
 
 [← README](../README.md) · [Usage guide](usage.md)
 
-BrowserAssert verifies a declared browser outcome. It does not own the agent's action or the browser session. This guide describes the implemented 0.2.0 design.
+BrowserAssert verifies a declared browser outcome. It does not own the agent's action or the browser session. This guide describes the implemented 0.2.1 design.
 
 ## High-level design
 

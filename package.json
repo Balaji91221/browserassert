@@ -1,6 +1,6 @@
 {
-  "name": "browserassert",
-  "version": "0.2.0",
+  "name": "@kelavathbalajinaik/browserassert",
+  "version": "0.2.1",
   "description": "Evidence based postcondition checks for browser actions",
   "type": "module",
   "engines": {

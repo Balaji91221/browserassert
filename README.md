@@ -151,7 +151,7 @@ Read the [architecture guide](https://github.com/Balaji91221/browserassert/blob/
 | Start here | Go deeper |
 |---|---|
 | [Usage and integration recipes](https://github.com/Balaji91221/browserassert/blob/main/docs/usage.md) | [Architecture: HLD and LLD](https://github.com/Balaji91221/browserassert/blob/main/docs/architecture.md) |
-| [Implemented features](https://github.com/Balaji91221/browserassert/blob/main/FEATURE_MATRIX.md) | [Project plan](https://github.com/Balaji91221/browserassert/blob/main/PROJECT_PLAN.md) |
+| [Implemented features](https://github.com/Balaji91221/browserassert/blob/main/FEATURE_MATRIX.md) | [Contributing](https://github.com/Balaji91221/browserassert/blob/main/CONTRIBUTING.md) |
 | [Verification and release scope](https://github.com/Balaji91221/browserassert/blob/main/IMPLEMENTATION_STATUS.md) | [Security policy](https://github.com/Balaji91221/browserassert/blob/main/SECURITY.md) |
 
 ## Development

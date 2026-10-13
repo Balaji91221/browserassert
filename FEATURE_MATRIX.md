@@ -1,6 +1,6 @@
 # BrowserAssert feature completion matrix
 
-| Plan feature | Implementation | Evidence |
+| Feature | Implementation | Evidence |
 |---|---|---|
 | Controlled application | Normal, misleading save, expired session, form and download | `src/fixture.ts; examples/workflow.mjs` |
 | Validated contracts and states | Predicates, authentication gate, shared deadlines, cancellation | `test/plan.test.mjs` |

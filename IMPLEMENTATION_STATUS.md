@@ -1,6 +1,6 @@
 # BrowserAssert implementation status
 
-Version 0.2.1. See [feature matrix](FEATURE_MATRIX.md) for every in-scope plan phase and its tests.
+Version 0.2.1. See [feature matrix](FEATURE_MATRIX.md) for implemented features and their tests.
 
 Local first-release code is implemented and real-browser workflows are verified with installed Chrome. Cross-site universality, remote file content semantics, autonomous planning, hosting, and visual-only model judgments are outside the release scope. Independent user pilots have not been performed.
 

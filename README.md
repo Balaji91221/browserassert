@@ -1,8 +1,45 @@
-# BrowserAssert
+<div align="center">
 
-Evidence-backed browser postcondition verification. Local development release 0.2.0; not published to npm.
+<h1>BrowserAssert</h1>
+<p><strong>Your agent clicked Save. Did the change actually stick?</strong></p>
+<p>Check the outcome of a browser action with explicit expectations, bounded waits, and evidence you can inspect.</p>
 
-## Quick start and usage
+<p>
+  <a href="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml"><img src="https://github.com/Balaji91221/browserassert/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/Node.js-22.18%2B-339933" alt="Node.js 22.18 or newer">
+  <img src="https://img.shields.io/badge/TypeScript-SDK-3178c6" alt="TypeScript SDK">
+  <img src="https://img.shields.io/badge/Playwright-adapter-7c3aed" alt="Playwright adapter">
+</p>
+
+<p><a href="#why-i-built-it">Why</a> · <a href="#quick-start">Quick start</a> · <a href="#usage">Usage</a> · <a href="#architecture">Architecture</a> · <a href="#documentation">Documentation</a></p>
+</div>
+
+![BrowserAssert workflow: declare an expected result, observe the page, and inspect the evidence.](docs/assets/overview.svg)
+
+## Why I built it
+
+As an AI engineer, I want to separate an agent's claim that a task is done from evidence that the application reached the right state. A successful click is useful information, but the setting might still be unsaved, the session might have expired, or the request might have failed.
+
+I built BrowserAssert to make that final check a reusable part of the workflow. The agent performs an action; a small, explicit contract describes the result we expect; BrowserAssert checks the page and returns the observations behind its verdict.
+
+**Example:** an agent changes a display name to `Alice`. BrowserAssert reloads the page when asked, reads the field again, and checks that it still contains `Alice`.
+
+## What it helps you do
+
+| Need | BrowserAssert provides |
+|---|---|
+| Check that a setting persisted | A declared reload followed by a value check |
+| Verify a form submission | Checks against a receipt, status, or other explicit page signal |
+| Confirm a download completed | Filename and local file-size checks |
+| Debug a failed automation | JSON observations, an HTML report, and optional masked screenshots |
+| Handle uncertain outcomes | Separate `verified`, `failed`, and `unknown` results |
+
+Useful for browser-agent builders, Playwright automation authors, and QA engineers. **You own the browser and the action.** BrowserAssert attaches to an existing page.
+
+## Quick start
+
+Requires **Node.js 22.18+**. No model account or API key is needed.
 
 ```bash
 git clone https://github.com/Balaji91221/browserassert.git
@@ -10,104 +47,113 @@ cd browserassert
 npm ci
 npm run build
 npx playwright install chromium
-npm test
-npm run demo  # exits 1: the demo intentionally detects a non-persistent edit
+node examples/workflow.mjs /tmp/browserassert-demo-001
 ```
 
-If you already have Chrome, avoid a browser download by setting `BROWSERASSERT_EXECUTABLE` for the integration test:
+On Linux, use `npx playwright install --with-deps chromium` to install Chromium
+and its required system libraries.
+
+Use a fresh output directory. The example starts a local fixture app, saves a setting, submits a form, and downloads a file. Expected verdicts:
+
+```text
+settings: verified
+form:     verified
+download: verified
+```
+
+Open `/tmp/browserassert-demo-001/report.html` to inspect the saved settings check.
+
+![Actual BrowserAssert evidence report from the local settings fixture.](docs/assets/demo.png)
+
+*Actual HTML report from the included local fixture. This demonstrates a controlled workflow, not compatibility with every website.*
+
+To see a failure, run `npm run demo`. It simulates a value that disappears after reload and intentionally exits with code **1**.
+
+## Usage
+
+### Install the SDK in your application
+
+The source is public; version **0.2.0 is not published to npm**. From this checkout:
 
 ```bash
-BROWSERASSERT_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm test
+npm pack
+# In your own application:
+npm install /absolute/path/to/browserassert/ai-opensource-local-browserassert-0.2.0.tgz
 ```
 
-The verifier returns `verified`, `failed`, or `unknown`. CLI exit codes are respectively 0, 1, and 2. A missing browser executable is an integration setup failure, not a passing test. Unit tests alone can be run with `node --test test/core.test.mjs`.
-
-### Attach to an existing Playwright page
+### Verify a result on an existing Playwright page
 
 ```ts
 import { PlaywrightAdapter, verify } from '@ai-opensource-local/browserassert';
+
+// `page` is your existing Playwright Page, after your agent saves the setting.
 const result = await verify(
   { selector: '#display-name', expected: 'Alice', reload: true, timeoutMs: 3000 },
   new PlaywrightAdapter(page),
 );
-console.log(result.verdict, result.evidence);
+
+console.log(result.verdict);
+console.log(result.evidence);
 ```
 
-The caller owns the page and any action that changed it. The verifier never clicks Save. `reload: true` explicitly permits one reload; omit it for observation-only checks. Supported expected values are scalar strings, numbers, booleans, or null; DOM values are usually strings. Selectors must match exactly one element. Adapter observations must identify that exact selector in `source`; unrelated evidence returns unknown. The adapter reads an element's `value`, or its `textContent` otherwise.
+The selector must identify exactly one element. `reload: true` permits a page reload; omit it for observation-only checks. The verifier never clicks Save or repeats the original action.
 
-```ts
-import { verifyDownload } from '@ai-opensource-local/browserassert';
-const pending = page.waitForEvent('download');
-await page.getByText('Download').click(); // caller's action
-const result = await verifyDownload(await pending, {
-  expectedFilename: 'report.txt', minBytes: 1,
-});
+| Verdict | Meaning |
+|---|---|
+| `verified` | The requested value was observed within the deadline |
+| `failed` | Completed observations did not satisfy the contract |
+| `unknown` | Evidence was incomplete, unavailable, cancelled, or still pending at the deadline |
+
+Use the **SDK for live browser checks** and the **CLI for recorded observations and reports**. There is no MCP server in this release. See the [usage guide](docs/usage.md) for verification plans, authentication signals, downloads, redaction, and cancellation.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Your agent or test] -->|performs action| P[Playwright page]
+    C[Expected result] --> V[Verifier]
+    V --> B[Browser adapter]
+    B -->|observe or declared reload| P
+    B -->|observations| V
+    V --> R[Verdict and evidence]
+    R --> O[JSON and HTML bundle]
 ```
 
-`verifyDownload` checks an already-started download, its completion error, filename, and local artifact size. This does not verify semantic file content.
+The verifier owns the decision rules. The adapter reads browser state. The reporting layer turns observations into shareable artifacts.
 
-### Recorded observations
+| Component | Responsibility |
+|---|---|
+| [`verify` / `BrowserAdapter`](src/index.ts) | Validate a contract, poll within a deadline, and classify the evidence |
+| [`PlaywrightAdapter`](src/index.ts) | Read a single matching element and perform a requested reload |
+| [`runPlan`](src/plan.ts) | Run multiple checks under one overall deadline and optional authentication gate |
+| [`saveBundle`](src/plan.ts) | Save redacted JSON, an HTML report, optional screenshot, and file hashes |
+| [`CLI`](src/cli.ts) | Evaluate recordings and generate reports |
+
+Read the [architecture guide](docs/architecture.md) for the HLD, LLD, contracts, and design tradeoffs.
+
+## Current scope
+
+- Checks are deterministic. No LLM decides whether an outcome is verified.
+- A page signal must be chosen for your application; authentication detection is not universal.
+- Download checks cover completion, filename, and size, not the meaning of the contents.
+- Screenshots are opt-in. Configure redaction and masking for sensitive data before sharing evidence.
+
+## Documentation
+
+| Start here | Go deeper |
+|---|---|
+| [Usage and integration recipes](docs/usage.md) | [Architecture: HLD and LLD](docs/architecture.md) |
+| [Implemented features](FEATURE_MATRIX.md) | [Project plan](PROJECT_PLAN.md) |
+| [Verification and release scope](IMPLEMENTATION_STATUS.md) | [Security policy](SECURITY.md) |
+
+## Development
 
 ```bash
-node dist/cli.js check-recording contract.json observations.json
-```
-
-A contract is `{ "selector": "#status", "expected": "Saved" }`. Observations are an array of `{ "source": "#status", "value": "Saved" }`. This evaluates recorded evidence only; it rejects reload contracts and cannot prove current browser state.
-
-## Local installation in another project
-
-Build and package this source folder, then install the resulting tarball in your consuming project:
-
-```bash
+npm run typecheck
 npm run build
-npm pack
-# In the consuming project:
-npm install /absolute/path/to/generated-package.tgz
+npm test
 ```
 
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. The package is marked private to prevent accidental publication. Original code is MIT licensed. Selecting an available public name and publishing remain explicit release tasks; dependencies retain their own licenses.
+The test suite includes real-browser integration checks; install Chromium as shown above. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, or open a [GitHub issue](https://github.com/Balaji91221/browserassert/issues) with a reproducible case.
 
-## Design and current scope
-
-See [FEATURE_MATRIX.md](FEATURE_MATRIX.md) for the implemented plan phases and [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for verification boundaries.
-
-## Verification plans and evidence bundles
-
-```ts
-import { PlaywrightAdapter, runPlan, saveBundle } from '@ai-opensource-local/browserassert';
-const plan = {
-  schemaVersion: 1, id: 'settings', timeoutMs: 5000,
-  authenticated: { selector: '#identity', expected: 'Signed in' },
-  checks: [{ id: 'persisted-name', selector: '#name', expected: 'Alice', reload: true }],
-};
-const result = await runPlan(plan, new PlaywrightAdapter(page), { signal });
-await saveBundle('/tmp/new-evidence', plan, result, {
-  redactSelectors: ['#secret'], redactValues: ['secret-value'],
-  screenshotPage: page, maskSelectors: ['#private-panel'],
-});
-```
-
-The screenshot is opt-in and masks both `maskSelectors` and `redactSelectors`. Only configured selectors/values are redacted; choose them for your application. Never assume automatic secret discovery. The fresh bundle directory contains plan/result JSON, an interactive HTML evidence report, optional screenshot, and a hash manifest. Existing output directories are never overwritten. No page HTML or browser storage is captured.
-
-Contracts support `equals` (default), string `contains`, and numeric `at_least`/`at_most`. All plan contracts are validated before browser operations. Checks share one overall deadline. A failed authentication observation yields unknown and prevents protected checks; it is an application-declared signal, not a universal authentication detector. AbortSignal cancellation yields unknown. Adapters should honor the signal; the wrapper cannot forcibly stop arbitrary caller code.
-
-### Run the full controlled workflow
-
-```bash
-npm run build
-BROWSERASSERT_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' \
-  node examples/workflow.mjs /tmp/browser-evidence-001
-```
-
-The example launches a controlled localhost app, performs a settings save, form submission, and download through Playwright, verifies each outcome, and saves redacted evidence. `startFixture` supports `normal`, `save-fails`, and `expired` modes through its URL query. The verification library attaches to an existing page and does not own the agent's actions.
-
-```bash
-node dist/cli.js run plan.json observations.json /tmp/recording-evidence-001
-node dist/cli.js report result.json report.html
-```
-
-The recording CLI refuses authentication and reload contracts because recorded observations cannot establish live page state. Use the SDK for live browser plans.
-
-Configuration shape: [JSON Schema](schemas/plan.schema.json). Runtime validation additionally enforces cross-field deadlines, duplicate IDs and supported operations. Generated `dist/index.d.ts` exposes the current SDK.
-
-A deadline during a pending observation is `unknown`, even when earlier polls mismatched. A completed mismatching observation followed by expiration while waiting to poll is `failed`. Results returned after the absolute deadline cannot verify the contract. Custom adapters must honor cancellation to stop their own work.
+Released under the [MIT License](LICENSE).

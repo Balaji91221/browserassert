@@ -165,3 +165,7 @@ npm test
 The test suite includes real-browser integration checks; install Chromium as shown above. See [CONTRIBUTING.md](https://github.com/Balaji91221/browserassert/blob/main/CONTRIBUTING.md) for the workflow, or open a [GitHub issue](https://github.com/Balaji91221/browserassert/issues) with a reproducible case.
 
 Released under the [MIT License](https://github.com/Balaji91221/browserassert/blob/main/LICENSE).
+
+---
+
+Explore more of my work: [latest open-source tools](https://github.com/Balaji91221#latest-open-source-tools) · [recent projects](https://github.com/Balaji91221#recent-work).
